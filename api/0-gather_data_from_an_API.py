@@ -1,22 +1,21 @@
 #!/usr/bin/python3
-
+""""Write a Python script that, using this REST API, for a given employee ID,
+returns information about his/her TODO list progress."""
 import requests
 import sys
 
 
-
 def employee_todo(employee_id):
+    """function that receives the id and query"""
     base_url = f"https://jsonplaceholder.typicode.com/users/{employee_id}"
     response = requests.get(base_url)
-    
 
     data = response.json()
     EMPLOYEE_NAME = data.get("name")
     EMPLOYEE_USERNAME = data.get("username")
 
-    todo_url = f"https://jsonplaceholder.typicode.com/todos?userId={employee_id}"
-    todo_response = requests.get(todo_url)
-    
+    allurl = f"https://jsonplaceholder.typicode.com/todos?userId={employee_id}"
+    todo_response = requests.get(allurl)
 
     todos = todo_response.json()
     NUMBER_OF_DONE_TASKS = []
@@ -31,9 +30,10 @@ def employee_todo(employee_id):
     for TASK_TITLE in NUMBER_OF_DONE_TASKS:
         print(f"\t{TASK_TITLE['title']}")
 
+
 if __name__ == "__main__":
     if len(sys.argv) != 2:
-        print("Usage: python3 script_name.py <employee_id>")
+        print("Usage: file and <employee_id>")
     else:
         employee_id = sys.argv[1]
         employee_todo(employee_id)
