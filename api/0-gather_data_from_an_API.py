@@ -24,7 +24,7 @@ def employee_todo(employee_id):
             NUMBER_OF_DONE_TASKS.append(task)
     TOTAL_NUMBER_OF_TASKS = len(todos)
 
-    print(f"Employee {EMPLOYEE_NAME} is done with tasks "
+    print(f"Employee {EMPLOYEE_NAME} is done with tasks"
           f"({len(NUMBER_OF_DONE_TASKS)}/{TOTAL_NUMBER_OF_TASKS}):")
 
     for TASK_TITLE in NUMBER_OF_DONE_TASKS:
