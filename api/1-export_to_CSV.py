@@ -1,51 +1,39 @@
 #!/usr/bin/python3
-"""
-Python script that, using this REST API, for a given employee ID,
-returns information about his/her todo list progress.
-"""
+""""Write a Python script that, using this REST API, for a given employee ID,
+returns information about his/her TODO list progress."""
 import requests
-from sys import argv
+import sys
 
 
-def display_info():
-    '''
-    This is the function to serch for a user info and tasks.
-    '''
+def employee_todo(employee_id):
+    """function that receives the id and query"""
+    base_url = f"https://jsonplaceholder.typicode.com/users/{employee_id}"
+    response = requests.get(base_url)
 
-    employee_id = str(argv[1])
+    data = response.json()
+    EMPLOYEE_NAME = data.get("name")
+    EMPLOYEE_USERNAME = data.get("username")
 
-    users_url = "https://jsonplaceholder.typicode.com/users/" + employee_id
+    allurl = f"https://jsonplaceholder.typicode.com/todos?userId={employee_id}"
+    todo_response = requests.get(allurl)
 
-    users_response = requests.get(users_url)
+    todos = todo_response.json()
+    NUMBER_OF_DONE_TASKS = []
+    for task in todos:
+        if task['completed']:
+            NUMBER_OF_DONE_TASKS.append(task)
+    TOTAL_NUMBER_OF_TASKS = len(todos)
 
-    if users_response.status_code == 200:
-        users_data = users_response.json()
-        user_name = users_data.get("name")  # Name of the user
+    print(f"Employee {EMPLOYEE_NAME} is done with tasks"
+          f"({len(NUMBER_OF_DONE_TASKS)}/{TOTAL_NUMBER_OF_TASKS}):")
 
-    todos_url = "https://jsonplaceholder.typicode.com/todos/"
-
-    todos_response = requests.get(todos_url)
-
-    if todos_response.status_code == 200:
-        todos_data = todos_response.json()
-        list_complete_task = []
-        num_of_task = 0
-        num_of_complete_task = 0
-        for dict in todos_data:
-            if dict.get("userId") == int(employee_id)\
-               and dict.get("completed"):
-                list_complete_task.append(dict.get("title"))
-                num_of_complete_task += 1
-            if dict.get("userId") == int(employee_id):
-                num_of_task += 1
-    # print(f"Employee {user_name} is done
-    # with tasks({num_of_complete_task}/{num_of_task}):")
-    all_text = f"Employee {user_name} is done with tasks"
-    print(f"{all_text}({num_of_complete_task}/{num_of_task}):")
-    for task in list_complete_task:
-        print(f"\t {task}")
+    for TASK_TITLE in NUMBER_OF_DONE_TASKS:
+        print(f"\t {TASK_TITLE['title']}")
 
 
 if __name__ == "__main__":
-
-    display_info()
+    if len(sys.argv) != 2:
+        print("Usage: file and <employee_id>")
+    else:
+        employee_id = sys.argv[1]
+        employee_todo(employee_id)
