@@ -28,7 +28,8 @@ def employee_todo(employee_id):
           f"({len(NUMBER_OF_DONE_TASKS)}/{TOTAL_NUMBER_OF_TASKS}):")
 
     for TASK_TITLE in NUMBER_OF_DONE_TASKS:
-        print("\t {}".format(TASK_TITLE['title']))
+        # print("\t {}".format(TASK_TITLE['title']))
+        print(f"\t {TASK_TITLE['title']}")
 
 
 if __name__ == "__main__":
