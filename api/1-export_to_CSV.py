@@ -1,8 +1,9 @@
 #!/usr/bin/python3
-""""Write a Python script that, using this REST API, for a given employee ID,
-returns information about his/her TODO list progress."""
+""""Using what you did in the task #0, extend your Python script to export
+data in the CSV format"""
 import requests
 import sys
+import csv
 
 
 def employee_todo(employee_id):
@@ -11,7 +12,6 @@ def employee_todo(employee_id):
     response = requests.get(base_url)
 
     data = response.json()
-    EMPLOYEE_NAME = data.get("name")
     EMPLOYEE_USERNAME = data.get("username")
 
     allurl = f"https://jsonplaceholder.typicode.com/todos?userId={employee_id}"
@@ -24,11 +24,16 @@ def employee_todo(employee_id):
             NUMBER_OF_DONE_TASKS.append(task)
     TOTAL_NUMBER_OF_TASKS = len(todos)
 
-    print(f"Employee {EMPLOYEE_NAME} is done with tasks"
-          f"({len(NUMBER_OF_DONE_TASKS)}/{TOTAL_NUMBER_OF_TASKS}):")
-
-    for TASK_TITLE in NUMBER_OF_DONE_TASKS:
-        print(f"\t {TASK_TITLE['title']}")
+    # filename = "{}.csv".format(USER_ID)
+    filename = f"{employee_id}.csv"
+    with open(filename, mode='w', newline='') as csvfile:
+        csv_writer = csv.writer(csvfile, quoting=csv.QUOTE_ALL)
+        # csv_writer.writerow(["USER_ID", "USERNAME",
+        #                      "TASK_COMPLETED_STATUS",
+        #                      "TASK_TITLE"])
+        for task in NUMBER_OF_DONE_TASKS:
+            csv_writer.writerow([employee_id, EMPLOYEE_USERNAME,
+                                task['completed'], task['title']])
 
 
 if __name__ == "__main__":
