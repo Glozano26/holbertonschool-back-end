@@ -20,20 +20,18 @@ def employee_todo(employee_id):
 
     todos = todo_response.json()
 
-    data_to_export = {
-        "USER_ID": [
-            {
-                "task": task["title"],
-                "completed": task["completed"],
-                "username": EMPLOYEE_USERNAME
-            }
-            for task in todos
-        ]
-    }
+    datas_exported = []
+    for task in todos:
+        data_to_export = {
+            "task": task["title"],
+            "completed": task["completed"],
+            "username": EMPLOYEE_USERNAME
+        }
+        datas_exported.append(data_to_export)
 
     filename = f"{employee_id}.json"
     with open(filename, mode='w') as file:
-        json.dump(data_to_export, file)
+        json.dump({f"{employee_id}": datas_exported}, file)
 
 
 if __name__ == "__main__":
