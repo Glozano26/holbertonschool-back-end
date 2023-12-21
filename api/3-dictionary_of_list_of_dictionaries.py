@@ -17,9 +17,8 @@ def employee_todo():
 
     todos = todo_response.json()
 
-    
     all_employees_data = {}
-    
+
     for user in user_data:
         datas_exported = []
         user_id = user.get("id")
@@ -32,7 +31,7 @@ def employee_todo():
                     "completed": task["completed"]
                 }
                 datas_exported.append(data_to_export)
-        
+
         all_employees_data[user_id] = datas_exported
 
     filename = "todo_all_employees.json"
