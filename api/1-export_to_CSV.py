@@ -18,20 +18,12 @@ def employee_todo(employee_id):
     todo_response = requests.get(allurl)
 
     todos = todo_response.json()
-    NUMBER_OF_DONE_TASKS = []
-    for task in todos:
-        if task['completed']:
-            NUMBER_OF_DONE_TASKS.append(task)
-    TOTAL_NUMBER_OF_TASKS = len(todos)
 
     # filename = "{}.csv".format(USER_ID)
     filename = f"{employee_id}.csv"
     with open(filename, mode='w', newline='') as csvfile:
         csv_writer = csv.writer(csvfile, quoting=csv.QUOTE_ALL)
-        # csv_writer.writerow(["USER_ID", "USERNAME",
-        #                      "TASK_COMPLETED_STATUS",
-        #                      "TASK_TITLE"])
-        for task in NUMBER_OF_DONE_TASKS:
+        for task in todos:
             csv_writer.writerow([employee_id, EMPLOYEE_USERNAME,
                                 task['completed'], task['title']])
 
